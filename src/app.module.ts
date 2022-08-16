@@ -6,13 +6,16 @@ import { AppService } from './app.service';
 import { Contacts } from './entities/contacts.entity';
 import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
+import { UserController } from './controllers/user.controller';
+import { UserService } from './services/user.service';
+import { Users } from './entities/user.entity';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot( {isGlobal:true}),
-    TypeOrmModule.forFeature([Contacts]),
-    
+    TypeOrmModule.forFeature([Contacts,Users]),
+
 // ======== Connect to DB ==============    
     TypeOrmModule.forRoot(
       {
@@ -22,12 +25,13 @@ import { ContactService } from './services/contact.service';
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
         ssl:{rejectUnauthorized: false},
-        entities:[Contacts],
+        entities:[Contacts,Users],
         synchronize: true,
+        logging: true
       }
     )
   ],
-  controllers: [AppController, ContactController],
-  providers: [AppService, ContactService],
+  controllers: [AppController, ContactController, UserController],
+  providers: [AppService, ContactService, UserService],
 })
 export class AppModule {}
